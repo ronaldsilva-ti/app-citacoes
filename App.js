@@ -1,25 +1,39 @@
 import React, { useState } from 'react';
-import {  StyleSheet, View, Text, FlatList} from 'react-native';
+import {  StyleSheet, View, Text, FlatList, } from 'react-native';
 
 import Citacoes from './components/Citacoes';
+import Formulario from './components/Formulario';
 
 
 
-const App = () => {
+
+export default function App(){
 
   const [ citacoes, setCitacoes ] = useState([
-    {id: '1', paciente:'Ronald', proprietario: 'Cosme', sintomas: 'Não come'},
-    {id: '2', paciente:'Paulo', proprietario: 'João', sintomas: 'Gripe'},
-    {id: '3', paciente:'Carlos', proprietario: 'Lucas', sintomas: 'Não dorme'},
+    {id: '1', paciente:'Dog 1', proprietario: 'Carlos', sintomas: 'Não come'},
+    {id: '2', paciente:'Cat 1', proprietario: 'João', sintomas: 'Patinha quebrada'},
+    {id: '3', paciente:'Cat 1', proprietario: 'João', sintomas: 'Patinha quebrada'},
+
   ])
+
+
+   function eliminarPaciente(id){
+     setCitacoes((citacoesAtuais) => {
+       return citacoesAtuais.filter(citacao => citacao.id !== id)
+     })
+   } 
 
   return (
     <View style={styles.conteudo}>
-      <Text style={styles.titulo}>Administrador de Citações</Text>   
+      <Text style={styles.titulo}>Administrador de Pacientes</Text>   
+      <Formulario />
+      <Text style={styles.subtitulo}>{citacoes.length <= 0 ? 'Não há citações' : 'Administrar'}</Text>   
+
+      
 
       <FlatList
           data={citacoes}          
-          renderItem={ ({ item }) => <Citacoes item={ item } /> }
+          renderItem={ ({ item }) => <Citacoes item={ item } eliminarPaciente={eliminarPaciente} /> }
           keyExtractor={ citacoes => citacoes.id }      
       />
     </View>
@@ -36,8 +50,17 @@ const styles = StyleSheet.create({
       marginTop: 40,
       fontSize: 24,
       fontWeight: 'bold',
-      textAlign: 'center' 
-    }
+      textAlign: 'center',
+      textTransform: "uppercase"
+    },
+    subtitulo: {
+      color: '#fff',
+      marginTop: 40,
+      fontSize: 24,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      marginBottom: 10  
+    }   
 });
 
-export default App;
+
