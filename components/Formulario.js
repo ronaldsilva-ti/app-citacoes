@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import {  StyleSheet, View, Text, TextInput, Button, Alert } from 'react-native';
+import {  StyleSheet, View, Text, TextInput, Button, ScrollView } from 'react-native';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 
-export default function Formulario(){
+export default function Formulario({citacoes, setMostraForm, setCitacoes}){
     const [ paciente, guardaPaciente ] = useState('');
     const [ dono, guardaDono ] = useState('');
     const [ telefone, guardaTelefone ] = useState('');
@@ -14,14 +14,11 @@ export default function Formulario(){
 
     const [mostraAlert, setMostraAlert] = useState(false);
 
-
-
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
 
 
     //Mostra ou oculta Alert
-
     function showAlert(){
         setMostraAlert(true)
     }
@@ -30,7 +27,7 @@ export default function Formulario(){
         setMostraAlert(false)
     }
 
-     //Mostra ou oculta Data Picke
+    //Mostra ou oculta Data Picke
     const showDatePicker = () => {
         setDatePickerVisibility(true);
     };
@@ -67,8 +64,7 @@ export default function Formulario(){
           ||sintomas.trim() === ''
           ||telefone.trim() === ''
           ||data.trim() === ''
-          ||hora.trim() === ''){  
-              
+          ||hora.trim() === ''){                
             showAlert()
             return;
 
@@ -76,8 +72,17 @@ export default function Formulario(){
             // return;
           }
 
-    }
+          const citacao = {paciente, dono, sintomas}
+          citacao.id = Math.random()
+          console.log(citacao)
 
+           const Novacitacoes = [...citacoes, citacao]
+           setCitacoes(Novacitacoes)
+
+           //Ocultar form
+           setMostraForm(false)
+           //Resetar Forms
+    }
     function mostrarAlerta(){
         // Alert.alert(
         //     'Erro', //Titulo
@@ -85,17 +90,16 @@ export default function Formulario(){
         //     [{
         //         text: 'OK'
         //     }]
-        // )      
-     
+        // )   
     }
 
     return(
-       <View style={styles.formulario}>
+       <ScrollView style={styles.formulario}>
             <View>
                 <Text style={styles.label}>Paciente:</Text>
                 <TextInput
                     style={styles.input}  
-                    onChangeText={(text) => guardaPaciente(text) }          
+                    onChangeText={text => guardaPaciente(text) }          
                 />
             </View>
 
@@ -103,7 +107,7 @@ export default function Formulario(){
                 <Text style={styles.label}>Dono:</Text>
                 <TextInput
                     style={styles.input}
-                    onChangeText={(text) => guardaDono(text) }            
+                    onChangeText={text => guardaDono(text) }            
                 />
             </View>
 
@@ -112,7 +116,7 @@ export default function Formulario(){
                 <TextInput
                     style={styles.input}
                     keyboardType='numeric' 
-                    onChangeText={(text) => guardaTelefone(text) }    
+                    onChangeText={text => guardaTelefone(text) }    
                 />
             </View>
             <View style={styles.view}>
@@ -147,7 +151,7 @@ export default function Formulario(){
                 <TextInput
                     multiline
                     style={styles.input}   
-                    onChangeText={(text) => guardaSintomas(text) }         
+                    onChangeText={text => guardaSintomas(text) }         
                 />
             </View>
 
@@ -173,19 +177,16 @@ export default function Formulario(){
                     }}
                   />
                 )
-            }
+            }        
 
-        
-
-       </View>
+       </ScrollView>
     )
 }
 const styles = StyleSheet.create({
     formulario:{
         backgroundColor: '#FFF',
         paddingHorizontal:10,
-        paddingVertical: 10,
-        marginHorizontal: '2.5%'
+        paddingVertical: 10     
     },  
     label:{
         fontWeight: 'bold',
@@ -194,7 +195,7 @@ const styles = StyleSheet.create({
     },
     input:{
         marginTop:10,
-        height:40,
+        height:37,
         borderColor:'black',
         borderWidth:1,
         borderStyle: 'solid'
@@ -210,6 +211,7 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase'
     },
     btnSubmit:{
-        marginTop: 15
+        marginTop: 15,
+        marginBottom: 25
     }
 })

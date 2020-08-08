@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {  StyleSheet, View, Text, FlatList, Button } from 'react-native';
+import {  StyleSheet, View, Text, Button } from 'react-native';
 
 export default function Citacoes({item, eliminarPaciente}){
 
@@ -47,6 +47,5 @@ const styles =  StyleSheet.create({
     },
     texto: {
         fontSize: 18,
-    }
-   
+    }   
 })
